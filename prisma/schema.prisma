@@ -1,0 +1,308 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// Core Models - Sprint 1
+// ============================================
+
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  firstName         String?
+  lastName          String?
+  profilePictureUrl String?
+  isVerified        Boolean   @default(false)
+  verificationToken String?
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+
+  // Relations
+  healthProfile     HealthProfile?
+  favoriteRecipes   UserFavoriteRecipes[]
+
+  // Sprint 2+ relations (stubs)
+  pantryInventories PantryInventory[]
+  financialLogs     FinancialLog[]
+  mealLogs          MealLog[]
+  weightLogs        WeightLog[]
+  dietPlans         DietPlan[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("users")
+}
+
+model HealthProfile {
+  id                 String    @id @default(uuid())
+  userId             String    @unique
+  heightCm           Float?
+  weightKg           Float?
+  age                Int?
+  gender             String?
+  activityLevel      String?
+  goal               String?
+  targetWeightKg     Float?
+  targetCaloricIntake Int?
+
+  // Relation
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("health_profiles")
+}
+
+// ============================================
+// Recipe Models - Sprint 2+
+// ============================================
+
+model Recipe {
+  id                String    @id @default(uuid())
+  name              String
+  description       String?
+  difficultyLevel   String?
+  prepTimeMinutes   Int?
+  cookTimeMinutes   Int?
+  servings          Int       @default(1)
+  instructions      String
+  imageUrl          String?
+  source            String?
+
+  // Relations
+  ingredients       RecipeIngredient[]
+  nutrition         RecipeNutrition?
+  userFavorites     UserFavoriteRecipes[]
+  mealLogs          MealLog[]
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([name])
+  @@map("recipes")
+}
+
+model Ingredient {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  category  String?
+  isCommon  Boolean   @default(false)
+
+  // Relations
+  recipes   RecipeIngredient[]
+  pantryItems PantryItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([name])
+  @@index([category])
+  @@map("ingredients")
+}
+
+model RecipeIngredient {
+  id           String    @id @default(uuid())
+  recipeId     String
+  ingredientId String
+  quantity     Float
+  unit         String
+
+  // Relations
+  recipe       Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([recipeId, ingredientId])
+  @@index([recipeId])
+  @@index([ingredientId])
+  @@map("recipe_ingredients")
+}
+
+model RecipeNutrition {
+  id                String    @id @default(uuid())
+  recipeId          String    @unique
+  calories          Int?
+  proteinG          Float?
+  carbsG            Float?
+  fatG              Float?
+  fiberG            Float?
+  sodiumMg          Int?
+  perServing        Boolean   @default(true)
+
+  // Relation
+  recipe            Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([recipeId])
+  @@map("recipe_nutrition")
+}
+
+model UserFavoriteRecipes {
+  id        String    @id @default(uuid())
+  userId    String
+  recipeId  String
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe    Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, recipeId])
+  @@index([userId])
+  @@index([recipeId])
+  @@map("user_favorite_recipes")
+}
+
+// ============================================
+// Pantry Models - Sprint 2+
+// ============================================
+
+model PantryInventory {
+  id        String    @id @default(uuid())
+  userId    String
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     PantryItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("pantry_inventories")
+}
+
+model PantryItem {
+  id          String    @id @default(uuid())
+  pantryId    String
+  ingredientId String
+  quantity    Float
+  unit        String
+  expiryDate  DateTime?
+
+  // Relations
+  pantry      PantryInventory @relation(fields: [pantryId], references: [id], onDelete: Cascade)
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([pantryId])
+  @@index([ingredientId])
+  @@map("pantry_items")
+}
+
+// ============================================
+// Financial Models - Sprint 2+
+// ============================================
+
+model FinancialLog {
+  id                        String    @id @default(uuid())
+  userId                    String
+  amount                    Float
+  logType                   String
+  description               String?
+  receiptImageUrl           String?
+  opportunityCostAnalysis   String?   // stores JSON as string for SQLite
+  date                      DateTime
+
+  // Relation
+  user                      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([date])
+  @@map("financial_logs")
+}
+
+// ============================================
+// Meal & Health Tracking Models - Sprint 3+
+// ============================================
+
+model MealLog {
+  id                String    @id @default(uuid())
+  userId            String
+  recipeId          String?
+  mealType          String
+  loggedDate        DateTime
+  servingsConsumed  Float?
+  caloriesConsumed  Int?
+  proteinG          Float?
+  carbsG            Float?
+  fatG              Float?
+  notes             String?
+
+  // Relations
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe            Recipe?   @relation(fields: [recipeId], references: [id])
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([loggedDate])
+  @@index([recipeId])
+  @@map("meal_logs")
+}
+
+model WeightLog {
+  id        String    @id @default(uuid())
+  userId    String
+  weightKg  Float
+  loggedDate DateTime
+  notes     String?
+
+  // Relation
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, loggedDate])
+  @@index([userId])
+  @@index([loggedDate])
+  @@map("weight_logs")
+}
+
+model DietPlan {
+  id                String    @id @default(uuid())
+  userId            String
+  goalType          String
+  dailyCaloricTarget Int
+  proteinTargetG    Float?
+  carbsTargetG      Float?
+  fatTargetG        Float?
+  startDate         DateTime
+  endDate           DateTime?
+  isActive          Boolean   @default(true)
+
+  // Relation
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([isActive])
+  @@map("diet_plans")
+}
