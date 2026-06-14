@@ -1,0 +1,9 @@
+{
+  "name": "Kilerim",
+  "short_name": "Kilerim",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7fbf5",
+  "theme_color": "#32623f",
+  "description": "Evdeki malzemelerle atıksız yemek önerileri."
+}

@@ -1,0 +1,19 @@
+{
+  "name": "kilerim-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kilerim PWA and mobile wrapper prototype.",
+  "scripts": {
+    "preview": "python3 -m http.server 8000",
+    "sync:web": "node scripts/copy-web.mjs",
+    "cap:add:ios": "npm run sync:web && cap add ios",
+    "cap:add:android": "npm run sync:web && cap add android",
+    "cap:sync": "npm run sync:web && cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/ios": "^7.4.4"
+  }
+}

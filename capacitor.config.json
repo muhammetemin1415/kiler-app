@@ -1,0 +1,8 @@
+{
+  "appId": "app.kilerim.prototype",
+  "appName": "Kilerim",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

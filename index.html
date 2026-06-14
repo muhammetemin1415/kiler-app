@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7fbf5" />
+    <title>Kilerim Prototip</title>
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="workspace">
+      <header class="workspace-header">
+        <div>
+          <p class="eyebrow">Atıksız mutfak asistanı</p>
+          <h1>Kilerim</h1>
+        </div>
+        <div class="mode-switch" aria-label="Görünüm seç">
+          <button class="mode-button active" id="userModeButton" type="button">Kullanıcı</button>
+          <button class="mode-button" id="adminModeButton" type="button">Admin</button>
+        </div>
+      </header>
+
+      <section class="user-layout" id="userView">
+        <div class="phone-frame">
+          <div class="app-shell">
+            <header class="topbar">
+              <div>
+                <p class="eyebrow">3 tık mutfak</p>
+                <h2>Kilerim</h2>
+              </div>
+              <button class="score-pill" id="scoreButton" type="button" aria-label="Yeşil puan">
+                <span id="scoreValue">0</span>
+                <small>puan</small>
+              </button>
+            </header>
+
+            <section class="quick-actions" aria-label="Hızlı işlemler">
+              <button class="primary-action" id="scanButton" type="button">
+                <span class="action-icon">▣</span>
+                <span>
+                  <strong>Fiş Tara</strong>
+                  <small>Malzemeleri otomatik ekle</small>
+                </span>
+              </button>
+              <button class="secondary-action" id="dinnerButton" type="button">
+                <span class="action-icon">◴</span>
+                <span>
+                  <strong>Ne yesek?</strong>
+                  <small>Evdekiyle tarif bul</small>
+                </span>
+              </button>
+              <button class="secondary-action compact-action" id="shoppingButton" type="button">
+                <span class="action-icon">□</span>
+                <span>
+                  <strong>Liste</strong>
+                  <small>Eksikleri toparla</small>
+                </span>
+              </button>
+              <button class="secondary-action compact-action" id="plannerButton" type="button">
+                <span class="action-icon">☉</span>
+                <span>
+                  <strong>Plan</strong>
+                  <small>Haftayı kur</small>
+                </span>
+              </button>
+            </section>
+
+            <section class="add-strip" aria-label="Malzeme ekle">
+              <input id="ingredientInput" type="text" placeholder="Malzeme ekle: domates, yumurta..." autocomplete="off" />
+              <button id="addButton" type="button" aria-label="Malzeme ekle">+</button>
+            </section>
+
+            <section class="content-section" id="pantrySection">
+              <div class="section-title">
+                <h2>Kiler</h2>
+                <button class="ghost-button" id="seedButton" type="button">Örnek doldur</button>
+              </div>
+              <div class="category-tabs" id="categoryTabs" aria-label="Kategoriler"></div>
+              <div class="pantry-grid" id="pantryGrid"></div>
+            </section>
+
+            <section class="content-section hidden" id="recipesSection">
+              <div class="section-title">
+                <h2>Tarif önerileri</h2>
+                <button class="ghost-button" id="backToPantryButton" type="button">Kilere dön</button>
+              </div>
+              <div class="recipe-list" id="recipeList"></div>
+            </section>
+
+            <section class="content-section hidden" id="walletSection">
+              <div class="section-title">
+                <h2>Özet</h2>
+                <button class="ghost-button" id="backFromWalletButton" type="button">Kilere dön</button>
+              </div>
+              <div id="walletContent"></div>
+            </section>
+
+            <section class="content-section hidden" id="shoppingSection">
+              <div class="section-title">
+                <h2>Alışveriş listesi</h2>
+                <button class="ghost-button" id="backFromShoppingButton" type="button">Kilere dön</button>
+              </div>
+              <div class="data-list" id="shoppingList"></div>
+            </section>
+
+            <section class="content-section hidden" id="plannerSection">
+              <div class="section-title">
+                <h2>Haftalık plan</h2>
+                <button class="ghost-button" id="backFromPlannerButton" type="button">Kilere dön</button>
+              </div>
+              <div class="data-list" id="plannerList"></div>
+            </section>
+
+            <section class="content-section hidden" id="communitySection">
+              <div class="section-title">
+                <h2>Topluluk</h2>
+                <button class="ghost-button" id="backFromCommunityButton" type="button">Kilere dön</button>
+              </div>
+              <form class="admin-form" id="communityForm">
+                <input id="communityTitle" type="text" placeholder="Uydurduğum tarif adı" />
+                <input id="communityIngredients" type="text" placeholder="Malzemeler: yoğurt, salatalık..." />
+                <button class="wide-button" type="submit">Paylaş</button>
+              </form>
+              <div class="data-list" id="communityList"></div>
+            </section>
+          </div>
+        </div>
+
+        <aside class="insight-panel">
+          <div class="panel-card">
+            <p class="eyebrow">Ürün nabzı</p>
+            <h2>Bugünkü durum</h2>
+            <div class="metric-grid" id="userMetrics"></div>
+          </div>
+          <div class="panel-card">
+            <div class="section-title">
+              <h2>Yaklaşan riskler</h2>
+              <button class="ghost-button" id="notifyButton" type="button">Bildirim simüle et</button>
+            </div>
+            <div id="riskList"></div>
+          </div>
+          <div class="panel-card">
+            <h2>Rozetler</h2>
+            <div class="badge-list" id="badgeList"></div>
+          </div>
+          <div class="panel-card">
+            <div class="section-title">
+              <h2>Topluluk</h2>
+              <button class="ghost-button" id="communityButton" type="button">Aç</button>
+            </div>
+            <div id="communityPreview"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="admin-layout hidden" id="adminView">
+        <section class="admin-hero">
+          <div>
+            <p class="eyebrow">Yönetim prototipi</p>
+            <h2>Ürünü buradan yönet</h2>
+          </div>
+          <div class="admin-actions">
+            <button class="ghost-button" id="resetDemoButton" type="button">Demoyu sıfırla</button>
+            <button class="ghost-button" id="exportButton" type="button">Veriyi dışa aktar</button>
+          </div>
+        </section>
+
+        <section class="admin-grid">
+          <article class="panel-card">
+            <h2>Metrikler</h2>
+            <div class="metric-grid admin-metrics" id="adminMetrics"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>Malzeme kataloğu</h2>
+            <form class="admin-form" id="catalogForm">
+              <input id="catalogName" type="text" placeholder="Malzeme adı" required />
+              <select id="catalogCategory">
+                <option value="sebze">Sebze</option>
+                <option value="protein">Protein</option>
+                <option value="sut">Süt ürünleri</option>
+                <option value="tahil">Tahıl</option>
+                <option value="meyve">Meyve</option>
+                <option value="diger">Diğer</option>
+              </select>
+              <input id="catalogShelf" type="number" min="1" max="120" value="5" aria-label="Raf ömrü" />
+              <button class="wide-button" type="submit">Malzeme ekle</button>
+            </form>
+            <div class="data-list" id="catalogList"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>Tarif veritabanı</h2>
+            <form class="admin-form" id="recipeForm">
+              <input id="recipeName" type="text" placeholder="Tarif adı" required />
+              <input id="recipeIngredients" type="text" placeholder="Malzemeler: yumurta, domates, peynir" required />
+              <div class="form-row">
+                <input id="recipeTime" type="number" min="1" value="15" aria-label="Süre" />
+                <input id="recipeCalories" type="number" min="1" value="420" aria-label="Kalori" />
+              </div>
+              <textarea id="recipeSteps" rows="3" placeholder="Kısa yapılış adımı"></textarea>
+              <button class="wide-button" type="submit">Tarif ekle</button>
+            </form>
+            <div class="data-list" id="adminRecipeList"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>Fiş/OCR test lab</h2>
+            <textarea id="adminReceiptText" rows="8" placeholder="Market fişi metnini buraya yapıştır"></textarea>
+            <button class="wide-button" id="adminParseButton" type="button">Test et</button>
+            <div class="data-list" id="adminReceiptResult"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>OCR sözlüğü</h2>
+            <form class="admin-form" id="ocrRuleForm">
+              <input id="ocrNeedle" type="text" placeholder="Fişte görünen ifade: PILIC" />
+              <input id="ocrIngredient" type="text" placeholder="Temiz malzeme: tavuk" />
+              <button class="wide-button" type="submit">Kural ekle</button>
+            </form>
+            <div class="data-list" id="ocrRuleList"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>Premium & gelir</h2>
+            <div class="toggle-row">
+              <span>Premium simülasyonu</span>
+              <button class="mode-button" id="premiumToggle" type="button">Kapalı</button>
+            </div>
+            <div class="data-list" id="growthList"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>Ürün yapılacakları</h2>
+            <div class="checklist" id="roadmapList"></div>
+          </article>
+
+          <article class="panel-card">
+            <h2>Topluluk moderasyonu</h2>
+            <div class="data-list" id="adminCommunityList"></div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <dialog class="sheet" id="receiptSheet">
+      <form method="dialog">
+        <div class="sheet-header">
+          <div>
+            <p class="eyebrow">Fiş okuma prototipi</p>
+            <h2>Fiş metnini yapıştır</h2>
+          </div>
+          <button class="icon-button" value="close" aria-label="Kapat">×</button>
+        </div>
+        <label class="file-drop">
+          <input id="receiptImage" type="file" accept="image/*" capture="environment" />
+          <span>Fiş fotoğrafı seç veya kameradan çek</span>
+        </label>
+        <img class="receipt-preview hidden" id="receiptPreview" alt="Fiş önizleme" />
+        <div class="camera-mock">Kamera/OCR alanı - prototipte fiş metniyle simüle edilir</div>
+        <textarea id="receiptText" rows="8" placeholder="DOMATES KG&#10;PINAR SUT 1LT&#10;YUMURTA 15LI&#10;BANVIT PILIC"></textarea>
+        <button class="wide-button" id="parseReceiptButton" value="default" type="button">Malzemeleri ayıkla</button>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
