@@ -1,4 +1,6 @@
 import { createRecipe, DEFAULT_CATALOG, DEFAULT_RECEIPT_MAP, DEFAULT_RECIPES, ROADMAP, STORAGE_KEY } from "./src/data/demo-data.js";
+import { parseReceipt as parseReceiptText } from "./src/services/receipts.js";
+import { getRecipeMatches as matchRecipes } from "./src/services/recipes.js";
 import { normalize, titleize } from "./src/utils/text.js";
 
 let state = null;
@@ -182,31 +184,11 @@ function removeIngredient(id, used = false) {
 }
 
 function parseReceipt(text) {
-  const found = new Map();
-  text.split(/\n+/).forEach((line) => {
-    const cleanLine = normalize(line);
-    state.receiptMap.forEach(([needle, ingredient]) => {
-      if (cleanLine.includes(normalize(needle))) found.set(ingredient, { ingredient, line: line.trim() || needle });
-    });
-  });
-  return [...found.values()];
+  return parseReceiptText(text, state.receiptMap);
 }
 
 function getRecipeMatches() {
-  const pantryNames = new Set(state.pantry.map((item) => item.name));
-  return state.recipes
-    .map((item) => {
-      const ingredients = item.ingredients.map(normalize);
-      const matched = ingredients.filter((ingredient) => pantryNames.has(ingredient));
-      return {
-        ...item,
-        ingredients,
-        matched,
-        missing: ingredients.filter((ingredient) => !pantryNames.has(ingredient)),
-        match: Math.round((matched.length / ingredients.length) * 100),
-      };
-    })
-    .sort((a, b) => b.match - a.match || a.time - b.time);
+  return matchRecipes(state.pantry, state.recipes);
 }
 
 function getMetrics() {
