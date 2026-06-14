@@ -105,7 +105,22 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
 
 ## P1 - Teknik Altyapi
 
-### 9. Proje Yapisi Standardizasyonu
+### 9. Tarif ve Besin Verisi Altyapisini Kur
+- Alan: Data / Nutrition / Product
+- Amac: Uygulamayi 60.000-70.000 dunya mutfagi tarifine ve kaynakli besin degeri hesabina hazirlamak.
+- Isler:
+  - Tarif ve besin veri kaynaklarini lisans, kalite ve kullanim amacina gore siniflandir.
+  - USDA FoodData Central ve Open Food Facts gibi kaynaklar icin kaynak kaydi tut.
+  - Malzeme gramaji uzerinden kalori, protein, karbonhidrat, yag, lif, seker ve sodyum hesaplayan servis yaz.
+  - Her hesapta kaynak listesi, eslesmeyen malzeme ve guven skoru dondur.
+  - 50-100 tariflik dogrulanmis seed veri setiyle basla, sonra 5.000 ve 70.000 tarif asamalarina bol.
+- Kabul kriteri:
+  - Kaynaksiz besin iddiasi uygulamaya girmiyor.
+  - Gramaji olmayan tarif otomatik yayinlanmiyor.
+  - Besin hesabi DOM'dan bagimsiz test edilebiliyor.
+  - Veri ithalat sureci `DATA_PIPELINE.md` icinde dokumante edilmis.
+
+### 10. Proje Yapisi Standardizasyonu
 - Alan: Engineering
 - Amac: Projeyi buyuyebilir klasor yapisina tasimak.
 - Isler:
@@ -117,7 +132,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Build/sync komutlari dokumante edilmis.
   - Git'e sadece gerekli dosyalar giriyor.
 
-### 10. Test Altyapisini Kur
+### 11. Test Altyapisini Kur
 - Alan: Quality
 - Amac: Temel is mantiginin bozulmasini engellemek.
 - Isler:
@@ -130,7 +145,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - En kritik is kurallari testlerle korunuyor.
   - Testler DOM'a ihtiyac duymadan kosabiliyor.
 
-### 11. Lint ve Format Kurallari
+### 12. Lint ve Format Kurallari
 - Alan: Developer Experience
 - Amac: Kod stilini tutarli hale getirmek.
 - Isler:
@@ -142,7 +157,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Lint temel hatalari yakaliyor.
   - Yeni gelistirici ayni standartla kod yazabiliyor.
 
-### 12. GitHub Actions CI Kur
+### 13. GitHub Actions CI Kur
 - Alan: DevOps
 - Amac: Her push'ta temel kontrollerin otomatik calismasi.
 - Isler:
@@ -156,7 +171,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
 
 ## P2 - Backend ve Hesap Sistemi
 
-### 13. Kimlik ve Kullanici Hesabi Stratejisi
+### 14. Kimlik ve Kullanici Hesabi Stratejisi
 - Alan: Auth / Product
 - Amac: Local demo verisinden gercek kullanici hesabina gecis planlamak.
 - Isler:
@@ -168,7 +183,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Misafir kullanici verisi hesap acinca kaybolmuyor.
   - Logout/login veri davranisi net.
 
-### 14. Bulut Veri Modeli
+### 15. Bulut Veri Modeli
 - Alan: Backend / Database
 - Amac: Gercek cok cihazli kullanim icin veri semasini tanimlamak.
 - Isler:
@@ -180,7 +195,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Hangi veri kullaniciya, hangi veri admine ait net.
   - Offline ve conflict durumlari icin karar var.
 
-### 15. Admin Panel Yetkilendirme
+### 16. Admin Panel Yetkilendirme
 - Alan: Security / Admin
 - Amac: Admin ozelliklerini normal kullanicidan ayirmak.
 - Isler:
@@ -194,7 +209,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
 
 ## P2 - Mobil ve Platform
 
-### 16. Capacitor Android Stabilizasyonu
+### 17. Capacitor Android Stabilizasyonu
 - Alan: Mobile / Android
 - Amac: Android Studio'da acilabilen, build alinabilen bir paket.
 - Isler:
@@ -206,7 +221,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Debug APK alinabiliyor.
   - Uygulama ikon ve ad bilgileri dogru.
 
-### 17. iOS Hazirlik
+### 18. iOS Hazirlik
 - Alan: Mobile / iOS
 - Amac: iOS build icin gereksinimleri tamamlamak.
 - Isler:
@@ -219,7 +234,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Simulator build alinabiliyor.
   - iOS izin metinleri hazir.
 
-### 18. PWA Kalitesi
+### 19. PWA Kalitesi
 - Alan: Web Platform
 - Amac: Uygulamayi tarayicida yuklenebilir, hizli ve guvenilir hale getirmek.
 - Isler:
@@ -233,7 +248,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
 
 ## P2 - Gelir ve Buyume
 
-### 19. Premium Akis Tasarimi
+### 20. Premium Akis Tasarimi
 - Alan: Monetization / UX
 - Amac: Premium ozellikleri kullaniciyi rahatsiz etmeden sunmak.
 - Isler:
@@ -245,7 +260,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Ucretsiz kullanici temel degeri alabiliyor.
   - Premium metrikleri takip edilebilir.
 
-### 20. Affiliate ve Market Yonlendirme
+### 21. Affiliate ve Market Yonlendirme
 - Alan: Growth / Partnerships
 - Amac: Eksik malzemeden satin alma aksiyonuna gecis saglamak.
 - Isler:
@@ -259,7 +274,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
 
 ## P3 - Analitik ve Operasyon
 
-### 21. Urun Analitigi
+### 22. Urun Analitigi
 - Alan: Analytics
 - Amac: Hangi ozelliklerin kullanildigini ve nerede takilma oldugunu anlamak.
 - Isler:
@@ -271,7 +286,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Kisisel veri gereksiz toplanmiyor.
   - Test ortaminda eventler dogrulanabiliyor.
 
-### 22. Hata Izleme
+### 23. Hata Izleme
 - Alan: Observability
 - Amac: Kullanici hatalarini ve JavaScript problemlerini yakalamak.
 - Isler:
@@ -283,7 +298,7 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
   - Kullanici beyaz ekran yerine acik mesaj goruyor.
   - Hata raporlarinda hassas veri bulunmuyor.
 
-### 23. Gizlilik ve Guvenlik Metinleri
+### 24. Gizlilik ve Guvenlik Metinleri
 - Alan: Legal / Trust
 - Amac: Fis, yemek, saglik ve harcama verileri icin guven olusturmak.
 - Isler:
@@ -302,21 +317,21 @@ Bu liste Kilerim prototipini kullanici testine, mobil pakete ve daha sonra canli
 - Hedef: Kullanici testine hazir, daha az kirilgan web prototipi.
 
 ### Milestone 2: Mobil Hazirlik
-- Task 3, 9, 11, 12, 16, 18
+- Task 3, 10, 12, 13, 17, 19
 - Hedef: CI, test ve Android/PWA paket akisi.
 
 ### Milestone 3: Gercek Hesap ve Bulut
-- Task 13, 14, 15, 21, 22, 23
+- Task 14, 15, 16, 22, 23, 24
 - Hedef: Hesapli, izlenebilir, guvenli MVP altyapisi.
 
 ### Milestone 4: Buyume ve Gelir
-- Task 7, 17, 19, 20
+- Task 7, 18, 20, 21
 - Hedef: iOS hazirligi, premium, affiliate ve planlama deneyimi.
 
 ## Ilk Sprint Onerisi
 
 1. Task 2 - Veri modelini uygulama mantigindan ayir.
-2. Task 10 - Test altyapisini kur.
+2. Task 11 - Test altyapisini kur.
 3. Task 4 - Kiler ekleme deneyimini iyilestir.
 4. Task 5 - Tarif eslesmesini profesyonel hale getir.
 5. Task 6 - Fis/OCR akisini gercekci hale getir.
