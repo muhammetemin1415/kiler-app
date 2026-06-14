@@ -1,4 +1,4 @@
-import { mkdir, copyFile, rm } from "node:fs/promises";
+import { mkdir, copyFile, cp, rm } from "node:fs/promises";
 import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
@@ -12,4 +12,6 @@ for (const file of files) {
   await copyFile(join(root, file), join(outDir, file));
 }
 
-console.log(`Copied ${files.length} web files to www/`);
+await cp(join(root, "src"), join(outDir, "src"), { recursive: true });
+
+console.log(`Copied ${files.length} web files and src/ to www/`);

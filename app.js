@@ -1,88 +1,8 @@
-const STORAGE_KEY = "kilerim-prototype-state-v3";
-
-const DEFAULT_CATALOG = [
-  { name: "domates", category: "sebze", shelfDays: 5, price: 18 },
-  { name: "salatalik", category: "sebze", shelfDays: 5, price: 14 },
-  { name: "biber", category: "sebze", shelfDays: 5, price: 16 },
-  { name: "patates", category: "sebze", shelfDays: 20, price: 10 },
-  { name: "sogan", category: "sebze", shelfDays: 25, price: 8 },
-  { name: "marul", category: "sebze", shelfDays: 4, price: 20 },
-  { name: "tavuk", category: "protein", shelfDays: 3, price: 95 },
-  { name: "yumurta", category: "protein", shelfDays: 14, price: 5 },
-  { name: "nohut", category: "protein", shelfDays: 90, price: 20 },
-  { name: "mercimek", category: "protein", shelfDays: 90, price: 18 },
-  { name: "sut", category: "sut", shelfDays: 6, price: 35 },
-  { name: "yogurt", category: "sut", shelfDays: 7, price: 45 },
-  { name: "peynir", category: "sut", shelfDays: 10, price: 75 },
-  { name: "kasar", category: "sut", shelfDays: 12, price: 80 },
-  { name: "tereyagi", category: "sut", shelfDays: 20, price: 90 },
-  { name: "makarna", category: "tahil", shelfDays: 120, price: 25 },
-  { name: "pirinc", category: "tahil", shelfDays: 120, price: 30 },
-  { name: "bulgur", category: "tahil", shelfDays: 120, price: 22 },
-  { name: "ekmek", category: "tahil", shelfDays: 3, price: 12 },
-  { name: "limon", category: "meyve", shelfDays: 12, price: 12 },
-  { name: "elma", category: "meyve", shelfDays: 12, price: 15 },
-  { name: "muz", category: "meyve", shelfDays: 5, price: 18 },
-];
-
-const DEFAULT_RECIPES = [
-  recipe("r-omlet", "Domatesli Peynirli Omlet", 12, 420, ["yumurta", "domates", "peynir", "biber"], "Yumurtayı çırp, sebzeleri sotele, peynirle birlikte tavada pişir."),
-  recipe("r-tavuk-bulgur", "Tavuklu Bulgur Kasesi", 28, 610, ["tavuk", "bulgur", "sogan", "yogurt"], "Bulguru haşla, tavuğu sotele, yoğurtla ferah bir kase hazırla."),
-  recipe("r-makarna", "Sebzeli Makarna", 22, 540, ["makarna", "domates", "biber", "sogan"], "Makarnayı haşla, sebzeleri sos haline getir, hepsini birleştir."),
-  recipe("r-salata", "Nohutlu Yeşil Salata", 10, 360, ["nohut", "salatalik", "domates", "limon", "marul"], "Hepsini doğra, limon ve zeytinyağı ile karıştır.", true),
-  recipe("r-tost", "Kahvaltı Tostu", 9, 450, ["ekmek", "kasar", "domates", "tereyagi"], "Ekmeği yağla, kaşar ve domatesle kızart."),
-];
-
-const DEFAULT_RECEIPT_MAP = [
-  ["domates", "domates"],
-  ["salkim", "domates"],
-  ["salat", "salatalik"],
-  ["biber", "biber"],
-  ["patates", "patates"],
-  ["sogan", "sogan"],
-  ["yum", "yumurta"],
-  ["sut", "sut"],
-  ["süt", "sut"],
-  ["yog", "yogurt"],
-  ["yoğ", "yogurt"],
-  ["peyn", "peynir"],
-  ["kasar", "kasar"],
-  ["kaşar", "kasar"],
-  ["pilic", "tavuk"],
-  ["piliç", "tavuk"],
-  ["tavuk", "tavuk"],
-  ["makarna", "makarna"],
-  ["pirinc", "pirinc"],
-  ["pirinç", "pirinc"],
-  ["bulgur", "bulgur"],
-  ["limon", "limon"],
-  ["elma", "elma"],
-  ["muz", "muz"],
-];
-
-const ROADMAP = [
-  "3 ekran MVP akışı",
-  "Kiler veri modeli",
-  "Tarif eşleştirme algoritması",
-  "Fiş/OCR ayrıştırma prototipi",
-  "Admin veri yönetimi",
-  "Kamera/fiş fotoğrafı akışı",
-  "Alışveriş listesi",
-  "Haftalık yemek planı",
-  "Atıksız yaşam puanı",
-  "Rozet sistemi",
-  "Haftalık özet simülasyonu",
-  "Topluluk paylaşımı",
-  "Premium/paywall simülasyonu",
-  "Affiliate satın alma yönlendirmesi",
-];
+import { createRecipe, DEFAULT_CATALOG, DEFAULT_RECEIPT_MAP, DEFAULT_RECIPES, ROADMAP, STORAGE_KEY } from "./src/data/demo-data.js";
+import { normalize, titleize } from "./src/utils/text.js";
 
 let state = null;
 let activeCategory = "tum";
-
-function recipe(id, name, time, calories, ingredients, steps, premium = false) {
-  return { id, name, time, calories, ingredients, steps, premium };
-}
 
 function initialState() {
   const previousState = state;
@@ -205,40 +125,6 @@ function saveState() {
 function saveAndRender() {
   saveState();
   render();
-}
-
-function normalize(text) {
-  return String(text || "")
-    .toLocaleLowerCase("tr-TR")
-    .replaceAll("ı", "i")
-    .replaceAll("ğ", "g")
-    .replaceAll("ü", "u")
-    .replaceAll("ş", "s")
-    .replaceAll("ö", "o")
-    .replaceAll("ç", "c")
-    .replace(/[^a-z0-9\s]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function displayName(text) {
-  return {
-    salatalik: "salatalık",
-    sogan: "soğan",
-    yogurt: "yoğurt",
-    sut: "süt",
-    kasar: "kaşar",
-    pirinc: "pirinç",
-    havuc: "havuç",
-    tereyagi: "tereyağı",
-  }[text] || text;
-}
-
-function titleize(text) {
-  return displayName(text)
-    .split(" ")
-    .map((word) => word.charAt(0).toLocaleUpperCase("tr-TR") + word.slice(1))
-    .join(" ");
 }
 
 function findCatalog(name) {
@@ -664,7 +550,7 @@ function wireEvents() {
   });
   els.recipeForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    state.recipes.push(recipe(crypto.randomUUID(), els.recipeName.value.trim(), Number(els.recipeTime.value), Number(els.recipeCalories.value), els.recipeIngredients.value.split(",").map(normalize).filter(Boolean), els.recipeSteps.value.trim() || "Malzemeleri hazırlayıp pratik şekilde pişir."));
+    state.recipes.push(createRecipe(crypto.randomUUID(), els.recipeName.value.trim(), Number(els.recipeTime.value), Number(els.recipeCalories.value), els.recipeIngredients.value.split(",").map(normalize).filter(Boolean), els.recipeSteps.value.trim() || "Malzemeleri hazırlayıp pratik şekilde pişir."));
     els.recipeForm.reset();
     els.recipeTime.value = 15;
     els.recipeCalories.value = 420;
